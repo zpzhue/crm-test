@@ -1,5 +1,18 @@
 from django.urls import path, re_path
-from django.shortcuts import HttpResponse
+from django.shortcuts import HttpResponse,render,redirect
+from django import forms
+
+
+class BaseModelForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for name, field in self.fields.items():
+            field.widget.attrs['class'] = 'input'
+            if isinstance(field, forms.DateField):
+                field.widget.input_type = 'date'
+                field.widget.format = '%Y-%m-%d'
+
 
 
 class ModelStark:
@@ -8,6 +21,8 @@ class ModelStark:
     '''
 
     list_display = ['__str__']
+
+    model_form_class = None
 
     def __init__(self, model):
         self.model = model
@@ -18,13 +33,43 @@ class ModelStark:
     def get_new_list_display(self):
         return self.list_display
 
+    def get_model_form_class(self):
+        class DetailModelForm(BaseModelForm):
+            class Meta:
+                model = self.model
+                fields = '__all__'
+
+        return self.model_form_class or DetailModelForm
+
     def list_view(self, request):
         # 查看的视图函数
-       return HttpResponse('list_view')
+        data = []  # 用户保存数据的，最终结格式为:  [[td, td, td...], [td, td, '''], [...]]
+        queryset = self.model.objects.all()
+
+        for field in self.get_new_list_display():
+            temp = []
+            for model_obj in queryset:
+                val = getattr(model_obj, field)
+                temp.append(val)
+            data.append(temp)
+        # data = [['python', 123], ['go', 1234]]
+        return render(request, 'stark/list_view.html', {'data': data})
 
     def add_view(self, request):
         # 添加的视图函数
-        return HttpResponse('add_view')
+
+        CurrentModelForm = self.get_model_form_class()
+
+        if request.method == 'GET':
+            form = CurrentModelForm()
+            return render(request, 'stark/add_view.html', {'form': form})
+        else:
+            form = CurrentModelForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect(self.list_view_url_alais)
+            else:
+                return render(request, 'stark/add_view.html', {'form': form})
 
     def change_view(self, request, id):
         # 修改的视图函数

@@ -1,0 +1,19 @@
+{% extends 'stark/base.html' %}
+
+
+{% block main-container %}
+        <table class="table is-hoverable is-striped is-bordered">
+            <thead>
+            </thead>
+
+            <tbody>
+            {% for tr in data %}
+                <tr>
+                    {% for td in tr %}
+                        <td>{{ td }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}

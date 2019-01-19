@@ -1,0 +1,17 @@
+{% extends 'stark/base.html' %}
+
+{% block main-container %}
+    <form action="" method="post" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="field">
+                <label class="label">{{ field.label }}</label>
+                <div class="control has-icons-left has-icons-right">
+                    {{ field }}
+                </div>
+                <p class="help is-danger">{{ field.errors.0 }}</p>
+            </div>
+        {% endfor %}
+        <button class="button is-primary is-pulled-right">提交</button>
+    </form>
+{% endblock %}

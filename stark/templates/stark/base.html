@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/bulma.css">
+    <style>
+        .nav {
+            height: 1000px;
+        }
+
+        .main-container {
+            margin-top: 100px;
+
+        }
+
+    </style>
+</head>
+<body>
+
+<nav class="navbar is-info " role="navigation" aria-label="main navigation">
+
+    <div class="navbar-brand column  is-2">
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item">首页</a>
+
+            <a class="navbar-item">后台管理</a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">更多</a>
+
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">About</a>
+                    <a class="navbar-item">Jobs</a>
+                    <a class="navbar-item">Contact</a>
+                    <hr class="navbar-divider">
+                    <a class="navbar-item">Report an issue</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-primary"><strong>注册</strong></a>
+                    <a class="button is-light">登陆</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="columns nav">
+    <div class="tile is-parent column is-2">
+        <article class="tile is-child notification is-dark">
+            <div class="content">
+                <p class="title">Tall tile</p>
+                <p class="subtitle">With even more content</p>
+                <div class="content">
+                    <!-- Content -->
+                </div>
+            </div>
+        </article>
+    </div>
+    <div class="main-container column is-offset-1 is-4">
+        {% block main-container %}
+        {% endblock %}
+    </div>
+
+</div>
+
+
+
+</body>
+</html>
